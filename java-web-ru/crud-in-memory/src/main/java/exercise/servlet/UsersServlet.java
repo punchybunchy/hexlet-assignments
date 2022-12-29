@@ -214,11 +214,7 @@ public class UsersServlet extends HttpServlet {
             return;
         }
 
-        users.add(user);
-
-        request.setAttribute("user", user);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/show.jsp");
-        requestDispatcher.forward(request, response);
+        response.sendRedirect("/users/show?id=" + id);
         // END
     }
 

@@ -16,7 +16,7 @@
             <a href="/users">Все пользователи</a>
             <!-- BEGIN -->
             <div>${error}</div>
-            <form action="/users/new" method="post">
+            <form action='/users/edit?id=${user.get("id")}' method="post">
                 <div class="mb-3">
                     <label>Имя</label>
                     <input class="form-control" type="text" name="firstName" value='${user.getOrDefault("firstName", "")}'>
@@ -25,7 +25,7 @@
                     <label>Email</label>
                     <input class="form-control" type="text" name="email" value='${user.getOrDefault("email", "")}'>
                 </div>
-                <button class="btn btn-primary" type="submit">Создать</button>
+                <button class="btn btn-primary" type="submit">Сохранить</button>
             </form>
             <!-- END -->
         </div>
