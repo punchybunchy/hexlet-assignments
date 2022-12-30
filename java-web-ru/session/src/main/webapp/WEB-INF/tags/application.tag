@@ -41,11 +41,12 @@
         </nav>
         <div class="container mt-3">
             <!-- BEGIN -->
-            <div class="alert alert-info" role="alert">
-                  ${sessionScope.flash}
-                  <% session.removeAttribute("flash"); %>
-            </div>
-
+            <c:if test='${sessionScope.flash != null}'>
+                <div class="alert alert-info" role="alert">
+                    ${sessionScope.flash}
+                </div>
+                <% session.removeAttribute("flash"); %>
+            </c:if>
             <!-- END -->
             <jsp:doBody />
         </div>

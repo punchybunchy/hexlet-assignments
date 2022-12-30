@@ -59,13 +59,13 @@ public class SessionServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
+        Map<String, String> userData = users.build(email);
         Map<String, String> user = users.findByEmail(email);
 
         if (user == null || !password.equals("password")) {
 
             session.setAttribute("flash", "Неверные логин или пароль");
-            request.setAttribute("user", user);
-            request.setAttribute("error", "Проверьте логин и пароль");
+            request.setAttribute("user", userData);
             response.setStatus(422);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/login.jsp");
