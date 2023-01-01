@@ -11,11 +11,11 @@ layout:decorate="~{layouts/application.html}">
   <form action="/users/list" method="post" th:object="${user}">
     <div class="mb-3">
       <label>Имя</label>
-      <input class="form-control" type="text" name="firstName" th:value="${user.getOrDefault('firstName', '')}">
+      <input class="form-control" type="text" name="firstName" th:value="*{firstName}">
     </div>
     <div class="mb-3">
       <label>Фамилия</label>
-      <input class="form-control" type="text" name="lastName" th:value="${user.getOrDefault('lastName', '')}">
+      <input class="form-control" type="text" name="lastName" th:value="*{lastName}">
     </div>
     <div class="mb-3">
       <label>Email</label>
