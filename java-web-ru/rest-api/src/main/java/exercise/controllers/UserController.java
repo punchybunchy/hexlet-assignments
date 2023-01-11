@@ -5,6 +5,8 @@ import exercise.domain.query.QUser;
 import io.ebean.DB;
 import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.List;
 
@@ -37,26 +39,15 @@ public class UserController implements CrudHandler {
     public void create(Context ctx) {
 
         // BEGIN
-        String body = ctx.body();
 
-//        BodyValidator<User> firstNameValidator = ctx.bodyValidator(User.class)
-//                .check(fn -> !fn.getFirstName().isEmpty(),
-//                        "First name couldn't be empty");
-//
-//        BodyValidator<User> lastNameValidator = ctx.bodyValidator(User.class)
-//                .check(ln -> !ln.getLastName().isEmpty(),
-//                        "Last name couldn't be empty");
-//
-//        BodyValidator<User> emailValidator = ctx.bodyValidator(User.class)
-//                .check(em -> EmailValidator.getInstance().isValid(em.getEmail()),
-//                        "Email is not valid");
-//
-//        BodyValidator<User> passwordValidator = ctx.bodyValidator(User.class)
-//                .check(pwd -> pwd.getPassword().length() >= 4,
-//                        "Password length should be not less than 4 symbols");
+        User user = ctx.bodyValidator(User.class)
+                .check(usr -> usr.getFirstName().length() > 0, "First name can not be empty")
+                .check(usr -> usr.getLastName().length() > 0, "Last name can not be empty")
+                .check(usr -> EmailValidator.getInstance().isValid(usr.getEmail()), "Should be valid email")
+                .check(usr -> StringUtils.isNumeric(usr.getPassword()), "Password must contains only digits")
+                .check(usr -> usr.getPassword().length() >= 4, "Password must contain at least 4 characters")
+                .get();
 
-        
-        User user = DB.json().toBean(User.class, body);
         user.save();
         // END
     };
@@ -65,23 +56,15 @@ public class UserController implements CrudHandler {
         // BEGIN
         String body = ctx.body();
         User updatedUser = DB.json().toBean(User.class, body);
-
-
-        new QUser()
-                .id.equalTo(Integer.parseInt(id))
-                .asUpdate()
-                .set("firstName", updatedUser.getFirstName())
-                .set("lastName", updatedUser.getLastName())
-                .set("email", updatedUser.getEmail())
-                .set("password", updatedUser.getPassword())
-                .update();
+        updatedUser.setId(id);
+        updatedUser.update();
         // END
     };
 
     public void delete(Context ctx, String id) {
         // BEGIN
         new QUser()
-                .id.equalTo(Integer.parseInt(id))
+                .id.equalTo(Long.parseLong(id))
                 .delete();
         // END
     };
