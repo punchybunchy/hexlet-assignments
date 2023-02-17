@@ -20,6 +20,38 @@ public class UsersController {
     private UserRepository userRepository;
 
     // BEGIN
+    //Вариант для первой задачи, когда поиск только по имени и фамилии
+//    @GetMapping(path = "")
+//    public Iterable<User> getUsers(
+//            @RequestParam(required = false) String firstName,
+//            @RequestParam(required = false) String lastName) {
+//
+//        if (firstName == null && lastName == null) {
+//            return userRepository.findAll();
+//        }
+//
+//        if (firstName == null) {
+//            return userRepository.findAll(
+//                    QUser.user.lastName.containsIgnoreCase(lastName)
+//            );
+//        }
+//
+//        if (lastName == null) {
+//            return userRepository.findAll(
+//                    QUser.user.firstName.containsIgnoreCase(firstName)
+//            );
+//        }
+//
+//        return userRepository.findAll(
+//                QUser.user.firstName
+//                        .containsIgnoreCase(firstName)
+//                        .and(
+//                                QUser.user.lastName
+//                                        .containsIgnoreCase(lastName)
+//                        )
+//        );
+//    }
+
     @GetMapping(path = "")
     public Iterable<User> getUsers(@QuerydslPredicate(root = User.class) Predicate predicate) {
         return userRepository.findAll(predicate);
