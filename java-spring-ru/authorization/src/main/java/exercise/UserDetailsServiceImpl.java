@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // BEGIN
         User user = repository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        String userRole = String.valueOf(user.getRole());
+        String userRole = user.getRole().name();
 
         List<SimpleGrantedAuthority> authorities = List.of(
                 new SimpleGrantedAuthority(userRole)
