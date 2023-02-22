@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyApplicationConfig {
 
-
-
+    @Bean
     public Daytime getDaytime() {
         int hour = LocalDateTime.now().getHour();
         if (hour >= 6 && hour < 12) {
@@ -29,22 +28,18 @@ public class MyApplicationConfig {
         }
     }
 
-    @Bean
     public Morning getMorning() {
         return new Morning();
     }
 
-    @Bean
     public Day getDay() {
         return new Day();
     }
 
-    @Bean
     public Evening getEvening() {
         return new Evening();
     }
 
-    @Bean
     public Night getNight() {
         return new Night();
     }
