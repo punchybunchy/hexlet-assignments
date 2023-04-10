@@ -11,25 +11,30 @@ class App {
     // BEGIN
 
     public static Map<String, Integer> getMinMax(int[] numbers) {
-        Map<String, Integer> result = new HashMap<>();
-
+        MinThread minThread = new MinThread(numbers);
         MaxThread maxThread = new MaxThread(numbers);
-        MinThread  minThread = new MinThread(numbers);
-        LOGGER.log(Level.INFO, "Thread " +  maxThread.getName() + " started");
-        maxThread.start();
-        LOGGER.log(Level.INFO, "Thread " +  maxThread.getName() + " finished");
 
-        LOGGER.log(Level.INFO, "Thread " +  minThread.getName() + " started");
         minThread.start();
+        LOGGER.log(Level.INFO, "Thread " + minThread.getName() + " started");
+        maxThread.start();
+        LOGGER.log(Level.INFO, "Thread " + maxThread.getName() + " started");
+
         try {
             minThread.join();
+            LOGGER.log(Level.INFO, "Thread " + minThread.getName() + " finished");
+            maxThread.join();
+            LOGGER.log(Level.INFO, "Thread " + maxThread.getName() + " finished");
         } catch (InterruptedException e) {
             System.out.println("Поток был прерван");
         }
-        LOGGER.log(Level.INFO, "Thread " +  minThread.getName() + " finished");
 
-        result.put("max", maxThread.getMax());
-        result.put("min", minThread.getMin());
+        Map result = Map.of(
+                "min", minThread.getMin(),
+                "max", maxThread.getMax()
+        );
+
+        LOGGER.log(Level.INFO, "Result: " + result.toString());
+
         return result;
     }
     // END
